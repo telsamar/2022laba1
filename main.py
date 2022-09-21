@@ -6,7 +6,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 # import scipy as sp
 
-data = pd.read_csv('fraudTrain.csv')
+data = pd.read_csv('data/fraudTrain.csv')
 # print(data.head())
 df1 = data[data["is_fraud"] == 0].sample(frac=0.20, random_state=42)
 # print(df1.head())
