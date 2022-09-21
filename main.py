@@ -6,6 +6,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 # import scipy as sp
 
+
 data = pd.read_csv('data/fraudTrain.csv')
 # print(data.head())
 df1 = data[data["is_fraud"] == 0].sample(frac=0.20, random_state=42)
@@ -14,8 +15,6 @@ df2 = data[data["is_fraud"] == 1]
 # print(df2.head())
 df = pd.concat([df1, df2])
 # print(df.head())
-
-# df.info()
 
 print(df["is_fraud"].value_counts())
 
@@ -42,6 +41,9 @@ def build_graph_bipartite(df_input, graph_type=nx.Graph()):
                            {(int(x["from"]), int(x["to"])): x["amt"] for idx, x in
                             df[["from", "to", "amt"]].iterrows()},
                            "weight")
+
+    # plt.show()
+
     return G
 
 def build_graph_tripartite(df_input, graph_type=nx.Graph()):
@@ -64,6 +66,8 @@ def build_graph_tripartite(df_input, graph_type=nx.Graph()):
 
     nx.set_edge_attributes(G, {(x["in_node"], mapping[idx]): x["amt"] for idx, x in df.iterrows()}, "weight")
     nx.set_edge_attributes(G, {(x["out_node"], mapping[idx]): x["amt"] for idx, x in df.iterrows()}, "weight")
+
+    # plt.show()
 
     return G
 
@@ -88,7 +92,7 @@ for G in [G_bu, G_tu]:
     )
     degrees.plot.hist()
     plt.yscale("log")
-
+    # plt.show()
 
 for G in [G_bu, G_tu]:
     allEdgesWeights = pd.Series({(d[0], d[1]): d[2]["weight"] for d in G.edges(data=True)})
@@ -100,6 +104,7 @@ for G in [G_bu, G_tu]:
 
     allEdgesWeightsFiltered.plot.hist(bins=40)
     plt.yscale("log")
+    # plt.show()
 
 
 # nx.degree_pearson_correlation_coefficient(G_bu)
@@ -113,23 +118,26 @@ import community
 parts = community.best_partition(G_bu, random_state=42, weight='weight')
 communities = pd.Series(parts)
 communities.value_counts().sort_values(ascending=False)
+print(parts)
 hist = communities.value_counts().plot.hist(bins=20)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
