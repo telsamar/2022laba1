@@ -158,3 +158,83 @@ plt.show()
 # Доброкачественные края → Представлены зеленым
 # Мошеннические края → Представлено красным
 
+# не удалось запустить
+# from sklearn.utils import resample
+#
+# df_majority = df[df.is_fraud==0]
+# df_minority = df[df.is_fraud==1]
+#
+# df_maj_downsample = resample(df_majority,
+#                              n_samples=len(df_minority),
+#                              random_state=42)
+#
+# df_downsampled = pd.concat([df_minority, df_maj_downsampled])
+#
+# print(df_downsampled.is_fraud.value_counts())
+# G_down = build_graph_bipartite(df_downsampled)
+
+# не удалось запустить
+# from sklearn.model_selection import train_test_split
+#
+# train_edges, test_edges, train_labels, test_labels = train_test_split(list(range(len(G_down.edges))),
+#                                                                       list(nx.get_edge_attributes(G_down,
+#                                                                                                   "label").values())
+#                                                                       test_size=0.20,
+#                                                                       random_state=42)
+
+# не удалось запустить
+# from node2vec import Node2Vec
+# from node2vec.edges import HadamardEmbedder, AverageEmbedder, WeightedL1Embedder, WeightedL2Embedder
+# node2vec_train = Node2Vec(train_graph, weight_key='weight')
+# model_train = node2vec_train.fit(window=10)
+
+# не удалось запустить
+# from node2vec.edges import HadamardEmbedder, AverageEmbedder, WeightedL1Embedder, WeightedL2Embedder
+# from sklearn.ensemble import RandomForestClassifier
+# from sklearn import metrics
+#
+# classes = [HadamardEmbedder, AverageEmbedder, WeightedL1Embedder, WeightedL2Embedder]
+# for cl in classes:
+#     embeddings_train = cl(keyed_vectors=model_train.wv)
+#     train_embeddings = [embeddings_train[str(edges[x][0]), str(edges[x][1])] for x in train_edges]
+#     test_embeddings = [embeddings_train[str(edges[x][0]), str(edges[x][1])] for x in test_edges]
+#
+#     rf = RandomForestClassifier(n_estimators=1000, random_state=42)
+#     rf.fit(train_embeddings, train_labels)
+#
+#     y_pred = rf.predict(test_embeddings)
+#     print(cl)
+#     print('Precision:', metrics.precision_score(test_labels, y_pred))
+#     print('Recall:', metrics.recall_score(test_labels, y_pred))
+#     print('F1-Score:', metrics.f1_score(test_labels, y_pred))
+
+
+
+
+# Создание моделей - Обучение без учителя
+# nod2vec_unsup = Node2Vec(G_down, weight_key='weight')
+# unsup_vals = nod2vec_unsup.fit(window=10)
+
+
+# не удалось запустить
+# from sklearn.cluster import KMeans
+#
+# classes = [HadamardEmbedder, AverageEmbedder, WeightedL1Embedder, WeightedL2Embedder]
+# true_labels = [x for x in nx.get_edge_attributes(G_down, "label").values()]
+#
+# for cl in classes:
+#     embedding_edge = cl(keyed_vectors=unsup_vals.wv)
+#
+#     embedding = [embedding_edge[str(x[0]), str(x[1])] for x in G_down.edges()]
+#     kmeans = KMeans(2, random_state=42).fit(embedding)
+#
+#     nmi = metrics.adjusted_mutual_info_score(true_labels, kmeans.labels_)
+#     ho = metrics.homogeneity_score(true_labels, kmeans.labels_)
+#     co = metrics.completeness_score(true_labels, kmeans.labels_)
+#     vmeasure = metrics.v_measure_score(true_labels, kmeans.labels_)
+#
+#     print(cl)
+#     print('NMI:', nmi)
+#     print('Homogeneity:', ho)
+#     print('Completeness:', co)
+#     print('V-Measure:', vmeasure)
