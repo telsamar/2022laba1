@@ -4,9 +4,8 @@ import numpy as np
 import pandas as pd
 import networkx as nx
 import matplotlib.pyplot as plt
-
-
-
+from networkx.algorithms import bipartite
+import community
 
 data = pd.read_csv('data/fraudTrain.csv')
 # print(data.head())
@@ -82,7 +81,6 @@ G_bd = build_graph_bipartite(df, nx.DiGraph(name='Bipartite Directed'))
 G_tu = build_graph_tripartite(df, nx.Graph(name='Tripartite Undirected'))
 G_td = build_graph_tripartite(df, nx.DiGraph(name='Tripartite Directed'))
 
-from networkx.algorithms import bipartite
 
 bipartite.is_bipartite(G_bu)
 
@@ -120,20 +118,20 @@ for G in [G_bu, G_tu]:
 
 
 # Next part
-import community
+
 
 parts = community.best_partition(G_bu, random_state=42, weight='weight')
 communities = pd.Series(parts)
 print(communities.value_counts().sort_values(ascending=False))
 
 communities.value_counts().plot.hist(bins=20)
-plt.figure(figsize=(8,4))
+plt.figure(figsize=(8, 4))
 # plt.show()
 
 
 # Следующий код генерирует индуцированный узлом подграф с использованием узлов, присутствующих в конкретном сообществе.
 graphs = []
-d ={}
+d = {}
 for x in communities.unique():
     tmp = nx.subgraph(G_bu, communities[communities == x].index)
     fraud_edges = sum(nx.get_edge_attributes(tmp, "label").values())
@@ -143,10 +141,9 @@ for x in communities.unique():
 
 pd.Series(d).sort_values(ascending=False)
 
-
 # Мы можем пойти еще на один шаг вперед и построить индуцированные узлами подграфы для конкретного сообщества
 
-gId = 1 #можно менять для разных сообществ
+gId = 1  # можно менять для разных сообществ
 plt.figure(figsize=(10, 10))
 spring_pos = nx.spring_layout(graphs[gId])
 plt.axis("off")
@@ -207,8 +204,6 @@ plt.show()
 #     print('Precision:', metrics.precision_score(test_labels, y_pred))
 #     print('Recall:', metrics.recall_score(test_labels, y_pred))
 #     print('F1-Score:', metrics.f1_score(test_labels, y_pred))
-
-
 
 
 # Создание моделей - Обучение без учителя
