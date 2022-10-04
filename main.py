@@ -102,6 +102,7 @@ G_td = build_graph_tripartite(df, nx.DiGraph(name='Tripartite Directed'))
 
 
 bipartite.is_bipartite(G_bu)
+# bipartite.is_bipartite(G_bd) # Test code
 
 # Network Topology - Statistical Analysis
 # print(nx.info(G_bu)) # For Jupyter Notebook, Warning: info() will be deprecated soon
@@ -134,6 +135,31 @@ for G in [G_bu, G_tu]:
     plt.yscale("log")
 #     # plt.figure(figsize=(7, 4))
 #     # plt.show()
+
+# Degree Centrality
+plt.figure(figsize=(10, 10))
+deg_C = nx.degree_centrality(G_bu)
+degc_distr = pd.Series(deg_C)
+degc_distr.plot.hist()
+
+# Betweenness Centrality
+plt.figure(figsize=(10, 10))
+bC = nx.betweenness_centrality(G_bu)
+bc_distr = pd.Series(bC)
+bc_distr.plot.hist()
+plt.yscale("log")
+
+# Closeness Centrality
+plt.figure(figsize=(10, 10))
+clos_C = nx.closeness_centrality(G_bu)
+closc_distr = pd.Series(clos_C)
+closc_distr.plot.hist()
+
+# Eigenvector Centrality
+plt.figure(figsize=(10, 10))
+eigen_C = nx.eigenvector_centrality(G_bu, max_iter=1000)
+closc_distr = pd.Series(clos_C)
+closc_distr.plot.hist()
 
 # Assortativity
 nx.degree_pearson_correlation_coefficient(G_bu)  # For Jupyter Notebook
